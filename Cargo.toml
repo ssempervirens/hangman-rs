@@ -5,5 +5,5 @@ authors = ["ssempervirens <camillefassett@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-rand = "0.3"
+rand = "0.7"
 anyhow = "1"
