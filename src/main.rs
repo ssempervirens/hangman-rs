@@ -1,15 +1,36 @@
-use rand::Rng;
-
+use anyhow::anyhow;
 use anyhow::Error;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
+use rand::Rng;
 use std::fs::File;
+use std::io;
 use std::io::prelude::*;
-use anyhow::anyhow;
+
+const GUESSES: u8 = 10;
+
+struct Letter {
+    character: char,
+    revealed: bool,
+}
 
 fn main() {
+    let mut remaining_guesses = GUESSES;
     let secret_word = select_word().unwrap();
+    let mut letters = generate_letters(&secret_word);
+
+    println!("This is no fair trial — this is hangman. Are you sure you want to play? What kind of a criminal justice system is this?");
+
+    loop {
+        println!("You have {} guesses remaining", remaining_guesses);
+        build_the_gallows(&letters);
+
+        println!("Please reconsider! capital punishment! If you must, go on, guess a letter...");
+        let guessed_letter = take_input();
+    }
     println!("Selected word is {}", secret_word);
+
+    build_the_gallows(&letters);
 }
 
 fn select_word() -> Result<String, Error> {
@@ -21,14 +42,44 @@ fn select_word() -> Result<String, Error> {
     let words: Vec<&str> = word_blob.trim().split(',').collect();
 
     // pick one of the words by random index
-    // let rand_index = rand::thread_rng().gen_range(0, words.len());
-
-    // Ok(words[rand_index].into())
     Ok(words
         .choose(&mut thread_rng())
         .ok_or_else(|| anyhow!("Word vector is empty"))?
-        .to_string()
-        )
+        .to_string())
+}
+
+fn generate_letters(word: &String) -> Vec<Letter> {
+    let mut letters: Vec<Letter> = Vec::new();
+    // loop through each character in word, push it to vector
+    for c in word.chars() {
+        letters.push(Letter {
+            character: c,
+            revealed: false,
+        });
+    }
+    return letters;
+}
+
+fn build_the_gallows(letters: &Vec<Letter>) {
+    let mut grid_to_display = String::from("Status of gallows:");
+    for l in letters {
+        grid_to_display.push(' ');
+        if l.revealed {
+            grid_to_display.push(l.character);
+        } else {
+            grid_to_display.push('_');
+        }
+    }
+    println!("{}", grid_to_display)
+}
+
+fn take_input() -> Result<char, Error> {
+    let mut input_string = String::new();
+    io::stdin().read_line(&mut input_string)?;
+    input_string
+        .chars()
+        .next()
+        .ok_or_else(|| anyhow!("Input string had no characters"))
 }
 
 // need to take user input to guess a character
