@@ -26,7 +26,19 @@ fn main() {
         build_the_gallows(&letters);
 
         println!("Please reconsider! capital punishment! If you must, go on, guess a letter...");
-        let guessed_letter = take_input();
+        let guessed_letter = take_input().unwrap();
+        let mut found_a_letter = false;
+        for c in &mut letters{
+            if c.character == guessed_letter{
+                found_a_letter = true;
+                c.revealed = true;
+
+            }
+         
+        }
+        if found_a_letter == true{
+            println!("Correct letter guessed: {}", guessed_letter)
+        }
     }
     println!("Selected word is {}", secret_word);
 
