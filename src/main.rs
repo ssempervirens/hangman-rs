@@ -39,6 +39,13 @@ fn main() {
         if found_a_letter == true{
             println!("Correct letter guessed: {}", guessed_letter)
         }
+        let game_not_won = letters.iter().any(|x| x.revealed == false);
+        if game_not_won == false{
+            // game is won
+            println!("You've saved someone from the criminal justice system! You won.");
+            break;
+        }
+    
     }
     println!("Selected word is {}", secret_word);
 
