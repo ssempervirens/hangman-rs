@@ -22,11 +22,12 @@ fn main() {
     println!("This is no fair trial — this is hangman. Are you sure you want to play? What kind of a criminal justice system is this?");
 
     loop {
-        println!("You have {} guesses remaining", remaining_guesses);
+        println!("\nYou have {} guesses remaining", remaining_guesses);
         build_the_gallows(&letters);
 
         println!("Please reconsider! capital punishment! If you must, go on, guess a letter...");
         let guessed_letter = take_input().unwrap();
+        alpha_character(guessed_letter);
         let mut found_a_letter = false;
         for c in &mut letters{
             if c.character == guessed_letter{
@@ -107,6 +108,12 @@ fn take_input() -> Result<char, Error> {
         .next()
         .ok_or_else(|| anyhow!("Input string had no characters"))
 }
+
+fn alpha_character(c: char) {
+    if ! c.is_alphabetic() {
+        println!("Your guess was not a letter, fool.");
+    }
+} 
 
 // need to take user input to guess a character
 // while turns is less than 10, guess a character
