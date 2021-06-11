@@ -38,7 +38,14 @@ fn main() {
         }
         if found_a_letter == true{
             println!("Correct letter guessed: {}", guessed_letter)
+        } else {
+            remaining_guesses = remaining_guesses - 1;
+            if remaining_guesses == 0 {
+                println!("You've condemned someone to death! Are you proud of yourself!?");
+                break;
+            }
         }
+
         let game_not_won = letters.iter().any(|x| x.revealed == false);
         if game_not_won == false{
             // game is won
