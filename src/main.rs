@@ -2,7 +2,6 @@ use anyhow::anyhow;
 use anyhow::Error;
 use rand::seq::SliceRandom;
 use rand::thread_rng;
-use rand::Rng;
 use std::fs::File;
 use std::io;
 use std::io::prelude::*;
@@ -113,10 +112,4 @@ fn alpha_character(c: char) {
     if ! c.is_alphabetic() {
         println!("Your guess was not a letter, fool.");
     }
-} 
-
-// need to take user input to guess a character
-// while turns is less than 10, guess a character
-// if turns equals 0, print you lost sry, bad man live
-// failed counter for getting a character wrong. if failed == 0, print you may have won the game,
-// but is the death penalty really a win?
+}
